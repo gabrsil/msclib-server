@@ -1,0 +1,120 @@
+"""Exposes a URL that specifies the behavior of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behavior of this scalar."""
+  url: String!
+) on SCALAR
+
+input AlbumInput {
+  name: String!
+  releaseDate: Date!
+  artistId: String!
+  imgUrl: String
+}
+
+type AlbumPayload {
+  errors: [Error!]
+  album: AlbumType
+}
+
+type AlbumType {
+  id: ID
+  name: String
+  artist: ArtistType
+  releaseDate: Date
+  imgUrl: String
+}
+
+input ArtistInput {
+  name: String!
+  startDate: Date!
+}
+
+type ArtistPayload {
+  errors: [Error!]
+  artist: ArtistType
+}
+
+type ArtistType {
+  id: ID
+  name: String
+  startDate: Date
+  albums: [AlbumType]
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type Error {
+  message: String
+}
+
+input GenreInput {
+  name: String!
+}
+
+type GenrePayload {
+  errors: [Error!]
+  genre: GenreType
+}
+
+type GenreType {
+  id: ID
+  name: String
+}
+
+input GetAlbumByIdPayload {
+  id: String!
+}
+
+type User {
+  id: ID
+  name: String
+  email: String
+  password: String
+  bornDate: Date
+  createdAt: String
+  reproductions: [Reproduction]
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+  bornDate: String!
+}
+
+input CreateUserPayload {
+  id: ID
+  name: String
+  email: String
+  password: String
+  bornDate: String
+  reproductions: [Reproduction]
+  createdAt: Date
+  currentToken: String
+}
+
+type Reproduction {
+  id: ID
+  user: User
+  album: AlbumInput
+  createdAt: String
+}
+
+type GetAlbumByIdType {
+  album: AlbumType
+  errors: [Error!]
+}
+
+type Mutation {
+  createAlbum(input: AlbumInput!): AlbumPayload!
+  createArtist(input: ArtistInput!): ArtistPayload!
+  createNewUser(input: CreateUserInput!): CreateUserPayload!
+  createNewGenre(input: GenreInput!): GenrePayload!
+}
+
+type Query {
+  allAlbums: [AlbumType]
+  getAlbumById(input: GetAlbumByIdPayload!): GetAlbumByIdType
+}
+

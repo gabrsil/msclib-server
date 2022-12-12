@@ -1,0 +1,24 @@
+version: '1.0'
+services:
+  # api:
+  #   container_name: api
+  #   build: .
+  #   ports:
+  #     - "3333:3333"
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - .:/app
+  #   links:
+  #     - postgres
+    
+  postgres:
+    container_name: database-msclib
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=dev
+    volumes:
+      - ./.data/postgresql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
