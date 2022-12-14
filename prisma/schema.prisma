@@ -1,7 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {,
+generator client {
   provider = "prisma-client-js"
 }
 
@@ -11,58 +11,66 @@ datasource db {
 }
 
 model Album {
-  id String @id @default(uuid())
-  name String  
-  artist Artist @relation(fields: [artistId], references: [id])
-  artistId String
-  releaseDate DateTime 
-  imgUrl String ?
+  id            String         @id @default(uuid())
+  name          String
+  artist        Artist         @relation(fields: [artistId], references: [id])
+  artistId      String
+  releaseDate   DateTime
+  imgUrl        String?
   reproductions Reproduction[]
-  createdAt  DateTime   @default(now())
+  createdAt     DateTime       @default(now())
 }
 
 model Genre {
-  id String @id @default(uuid())
-  name String
-  artists Artist[]
+  id        String     @id @default(uuid())
+  name      String
+  artists   Artist[]
   subGenres SubGenre[]
-  createdAt  DateTime   @default(now())
+  createdAt DateTime   @default(now())
 }
 
 model SubGenre {
-  id String @id @default(uuid())
-  genre Genre @relation(fields: [genreId], references: [id])
+  id      String @id @default(uuid())
+  genre   Genre  @relation(fields: [genreId], references: [id])
   genreId String
 }
 
-
 model Artist {
-  id String @id @default(uuid())
-  name String
+  id        String   @id @default(uuid())
+  name      String
   debutDate String
-  genre Genre @relation(fields: [genreId], references: [id]) 
-  genreId String
-  albums Album[]
-  createdAt  DateTime   @default(now())
+  genre     Genre    @relation(fields: [genreId], references: [id])
+  genreId   String
+  albums    Album[]
+  createdAt DateTime @default(now())
 }
 
 model User {
-  id String @id @default(uuid())
-  name String
-  email String @unique
-  password String
-  bornDate DateTime
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  password      String
+  bornDate      DateTime
   reproductions Reproduction[]
-  createdAt  DateTime   @default(now())
-  currentToken String ?
+  userTargets   Friendship[]   @relation("Friendship_userTarget")
+  userSource    Friendship?    @relation("Friendship_userSource")
+  createdAt     DateTime       @default(now())
+  currentToken  String?
 }
 
 model Reproduction {
- id String @id @default(uuid())
- userId String
- user User @relation(fields: [userId], references: [id]) 
- albumId String
- album Album @relation(fields: [albumId], references: [id])
- createdAt  DateTime   @default(now())
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  albumId   String
+  album     Album    @relation(fields: [albumId], references: [id])
+  createdAt DateTime @default(now())
 }
 
+model Friendship {
+  id         String @id @default(uuid())
+  sourceUser User   @relation("Friendship_userSource", fields: [sourceId], references: [id])
+  targetUser User   @relation("Friendship_userTarget", fields: [targetId], references: [id])
+  sourceId   String @unique
+  targetId   String
+}
