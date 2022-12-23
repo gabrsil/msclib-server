@@ -108,6 +108,12 @@ export default gql`
     reproductions: [Reproduction]
   }
 
+  type Friendship {
+    id: ID
+    sourceUser: User
+    targetUser: User
+  }
+
   input CreateUserInput {
     name: String!
     email: String!
@@ -124,6 +130,15 @@ export default gql`
     albumId: String!
   }
 
+  input CreateFriendshipInput {
+    sourceId: String!
+    targetId: String!
+  }
+
+  input GetFriendshipType {
+    sourceId: String!
+  }
+
   type ReproductionPayload {
     reproduction: Reproduction
   }
@@ -132,18 +147,28 @@ export default gql`
     reproductions: [Reproduction]
   }
 
+  type FriendshipPayload {
+    friendships: Friendship
+  }
+
+  type GetFriendshipPayload {
+    friendships: [Friendship]
+  }
+
   type Mutation {
     createNewAlbum(input: AlbumInput!): AlbumPayload!
     createNewArtist(input: ArtistInput!): ArtistPayload!
     createNewGenre(input: GenreInput!): GenrePayload!
     createNewUser(input: CreateUserInput!): CreateUserPayload!
     createNewReproduction(input: CreateReproductionInput!): ReproductionPayload
+    createNewFriendShip(input: CreateFriendshipInput!): FriendshipPayload!
     loginUser(input: LoginInput!): LoginPayload!
   }
 
   type Query {
     getAllAlbums: [AlbumType]
     getAlbumById(input: GetByIdType!): GetAlbumByIdType
+    getFriendshipByUser(input: GetFriendshipType!): GetFriendshipPayload
     getArtistById(input: GetByIdType!): GetArtistByIdType
     getReproductionByUser(input: GetByIdType!): GetReproductionByUserPayload
   }
