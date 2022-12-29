@@ -1,57 +1,57 @@
-import { PrismaClient } from "@prisma/client"
-import { ApolloError } from "apollo-server"
+import { PrismaClient } from "@prisma/client";
+import { ApolloError } from "apollo-server";
 
 interface ArtistInput {
-    input: {
-        name: string
-        debutDate: string
-        genreId: string
-    }
+  input: {
+    name: string;
+    debutDate: string;
+    genreId: string;
+  };
 }
 
 interface IGetById {
-    input: {
-        id: string
-    }
+  input: {
+    id: string;
+  };
 }
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const createNewArtist = async (_: any, { input }: ArtistInput) => {
-    const { genreId } = input
+  const { genreId } = input;
 
-    const existingGenre = await prisma.genre.findUnique({
-        where: {
-            id: genreId
-        }
-    })
+  const existingGenre = await prisma.genre.findUnique({
+    where: {
+      id: genreId,
+    },
+  });
 
-    if(!existingGenre) {
-        throw new ApolloError('A artist doesnt exist by the provided id.', '404')
-    }
+  if (!existingGenre) {
+    throw new ApolloError("A artist doesnt exist by the provided id.", "404");
+  }
 
-    const artist = await prisma.artist.create({
-        data: {
-            ...input
-        }
-    })
+  const artist = await prisma.artist.create({
+    data: {
+      ...input,
+    },
+  });
 
-    return { artist }
-}
+  return { artist };
+};
 
 const getArtistById = async (_: any, params: IGetById) => {
-    const artist = await prisma.artist.findUnique({
-        where: {
-            id: params?.input?.id
-        },
-        include: { albums: true }
-    })
+  const artist = await prisma.artist.findUnique({
+    where: {
+      id: params?.input?.id,
+    },
+    include: { albums: true },
+  });
 
-    if(!artist) {
-        throw new ApolloError('A artist doesnt exist by the provided id.', '404')
-    }
+  if (!artist) {
+    throw new ApolloError("A artist doesnt exist by the provided id.", "404");
+  }
 
-    return { artist }
-}
+  return { artist };
+};
 
-export default { query: { getArtistById }, mutation: { createNewArtist } }
+export default { query: { getArtistById }, mutation: { createNewArtist } };
