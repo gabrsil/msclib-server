@@ -67,10 +67,17 @@ model Reproduction {
   createdAt DateTime @default(now())
 }
 
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
 model Friendship {
-  id         String @id @default(uuid())
-  sourceUser User   @relation("Friendship_userSource", fields: [sourceId], references: [id])
-  targetUser User   @relation("Friendship_userTarget", fields: [targetId], references: [id])
-  sourceId   String @unique
+  id         String           @id @default(uuid())
+  sourceUser User             @relation("Friendship_userSource", fields: [sourceId], references: [id])
+  targetUser User             @relation("Friendship_userTarget", fields: [targetId], references: [id])
+  status     FriendshipStatus @default(PENDING)
+  sourceId   String           @unique
   targetId   String
 }
