@@ -4,20 +4,22 @@ import auth from "../resolvers/auth";
 import genre from "../resolvers/genre";
 import friendship from "../resolvers/friendship";
 import reproduction from "../resolvers/reproduction";
+import albumRating from "../resolvers/albumRating";
 
 export default {
   Query: {
-    ...album?.query,
-    ...artist?.query,
+    ...album.query,
+    ...artist.query,
     ...friendship.query,
-    ...reproduction?.query,
+    ...reproduction.query,
   },
   Mutation: {
-    ...artist?.mutation,
-    ...album?.mutation,
-    ...genre?.mutation,
-    ...auth?.mutation,
-    ...reproduction?.mutation,
-    ...friendship?.mutation,
+    ...artist.mutation,
+    ...album.mutation,
+    ...genre.mutation,
+    ...auth.mutation,
+    ...reproduction.mutation,
+    ...friendship.mutation,
+    ...albumRating.mutation,
   },
 };
