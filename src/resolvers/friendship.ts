@@ -27,15 +27,12 @@ const prisma = new PrismaClient();
 const getFriendshipByUser = async (_: any, { input }: FriendshipQuery) => {
   const { sourceId } = input;
 
+  await prisma.user;
   const userExists = await prisma.user.findUnique({
     where: {
       id: sourceId,
     },
   });
-  console.log(
-    "🚀 ~ file: friendship.ts:27 ~ getFriendshipByUser ~ userExists",
-    userExists
-  );
 
   if (!userExists) {
     throw new ApolloError("A user doesnt exist by the provided id.", "404");
