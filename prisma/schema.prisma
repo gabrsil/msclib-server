@@ -18,6 +18,7 @@ model Album {
   releaseDate   DateTime
   imgUrl        String?
   reproductions Reproduction[]
+  ratings       AlbumRating[]
   createdAt     DateTime       @default(now())
 }
 
@@ -55,6 +56,7 @@ model User {
   userTargets   Friendship[]   @relation("Friendship_userTarget")
   userSource    Friendship?    @relation("Friendship_userSource")
   createdAt     DateTime       @default(now())
+  ratings       AlbumRating[]
   currentToken  String?
 }
 
@@ -80,4 +82,14 @@ model Friendship {
   status     FriendshipStatus @default(PENDING)
   sourceId   String           @unique
   targetId   String
+}
+
+model AlbumRating {
+  id      String @id @default(uuid())
+  userId  String
+  albumId String
+  rating  Int
+  comment String
+  user    User   @relation(fields: [userId], references: [id])
+  album   Album  @relation(fields: [albumId], references: [id])
 }
