@@ -1,9 +1,10 @@
 import { gql, ApolloServer } from "apollo-server";
-import { makeExecutableSchema } from "graphql-tools";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 import { TypedQueryDocumentNode } from "graphql";
 import {
   constraintDirective,
   constraintDirectiveTypeDefs,
+  createApolloQueryValidationPlugin,
 } from "graphql-constraint-directive";
 import resolvers from "./graphql/resolver";
 import typeDefs from "./graphql/typeDefs";
@@ -16,11 +17,14 @@ let schema = makeExecutableSchema({
   typeDefs: [constraintDirectiveTypeDefs, typeDefs],
 });
 
-schema = constraintDirective()(schema);
-
 const server = new ApolloServer({
-  schema,
+  typeDefs: [constraintDirectiveTypeDefs, typeDefs],
   resolvers,
+  plugins: [
+    createApolloQueryValidationPlugin({
+      schema,
+    }),
+  ],
   context: ({ res }) => ({ res }),
   csrfPrevention: true,
   cors: {
