@@ -74,8 +74,8 @@ const loginUser = async (
 };
 
 const createNewUser = async (_: any, params: ICreateUser) => {
+  console.log("aaaaaaaa");
   const { bornDate, email, name, password } = params?.input;
-
   name?.trim();
   password?.trim();
   email?.trim();
@@ -98,7 +98,6 @@ const createNewUser = async (_: any, params: ICreateUser) => {
       password: await hash(password),
     },
   });
-
   return { user };
 };
 
