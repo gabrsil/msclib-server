@@ -108,15 +108,25 @@ export default gql`
     reproductions: [Reproduction]
   }
 
-  type Friendship {
+  type AlbumRating {
     id: ID
+    userId: String
+    albumId: String
+    rating: Int
+    comment: String
+    user: User
+    album: AlbumType
+  }
+
+  type Friendship {
+    id: ID!
     sourceUser: User
     targetUser: User
   }
 
   input CreateUserInput {
-    name: String!
-    email: String!
+    name: String! @constraint(minLength: 4, maxLength: 80)
+    email: String! @constraint(format: "email", maxLength: 255)
     password: String!
     bornDate: String!
   }
@@ -139,6 +149,19 @@ export default gql`
     sourceId: String!
   }
 
+  input AcceptFriendshipType {
+    friendshipId: String!
+    sourceId: String!
+    targetId: String!
+  }
+
+  input CreateAlbumRatingInput {
+    albumId: String
+    comment: String
+    rating: Int
+    userId: String
+  }
+
   type ReproductionPayload {
     reproduction: Reproduction
   }
@@ -155,6 +178,14 @@ export default gql`
     friendships: [Friendship]
   }
 
+  type AcceptFriendshipPayload {
+    friendship: Friendship
+  }
+
+  type AlbumRatingPayload {
+    albumRating: AlbumRating
+  }
+
   type Mutation {
     createNewAlbum(input: AlbumInput!): AlbumPayload!
     createNewArtist(input: ArtistInput!): ArtistPayload!
@@ -162,12 +193,14 @@ export default gql`
     createNewUser(input: CreateUserInput!): CreateUserPayload!
     createNewReproduction(input: CreateReproductionInput!): ReproductionPayload
     createNewFriendShip(input: CreateFriendshipInput!): FriendshipPayload!
+    createNewAlbumRating(input: CreateAlbumRatingInput!): AlbumRatingPayload!
     loginUser(input: LoginInput!): LoginPayload!
   }
 
   type Query {
     getAllAlbums: [AlbumType]
     getAlbumById(input: GetByIdType!): GetAlbumByIdType
+    acceptFriendship(input: AcceptFriendshipType!): AcceptFriendshipPayload
     getFriendshipByUser(input: GetFriendshipType!): GetFriendshipPayload
     getArtistById(input: GetByIdType!): GetArtistByIdType
     getReproductionByUser(input: GetByIdType!): GetReproductionByUserPayload
