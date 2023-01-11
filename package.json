@@ -24,11 +24,15 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
+    "@graphql-tools/schema": "^9.0.12",
     "@prisma/client": "^4.4.0",
     "apollo-server": "^3.10.2",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "graphql": "^16.6.0",
-    "jsonwebtoken": "^8.5.1"
+    "graphql-constraint-directive": "^4.1.2",
+    "graphql-tools": "^8.3.14",
+    "jsonwebtoken": "^8.5.1",
+    "zod": "^3.20.2"
   }
 }
