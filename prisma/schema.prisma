@@ -19,6 +19,7 @@ model Album {
   imgUrl        String?
   reproductions Reproduction[]
   ratings       AlbumRating[]
+  listenWishlists ListenWishlist[]
   createdAt     DateTime       @default(now())
 }
 
@@ -57,6 +58,7 @@ model User {
   userSource    Friendship?    @relation("Friendship_userSource")
   createdAt     DateTime       @default(now())
   ratings       AlbumRating[]
+  listenWishlists ListenWishlist[]
   currentToken  String?
 }
 
@@ -92,4 +94,12 @@ model AlbumRating {
   comment String
   user    User   @relation(fields: [userId], references: [id])
   album   Album  @relation(fields: [albumId], references: [id])
+}
+
+model ListenWishlist {
+  id    String @id @default(uuid())
+  albumId String
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  album Album @relation(fields: [albumId], references: [id])
 }
